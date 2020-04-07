@@ -1,0 +1,66 @@
+# First we will initialize ourt template and set some 'Paramaters' that will be needed by CloudFormation to create our stack.
+# The AWSTemplateFormatVersion section is option and it identifies the capabilities of the template. 
+# We use the 'Paramters' to tell CloudFormation' that we will need a KeyName, a VPCID and a SUBNETID. Cloudformation will as you to fill in those 3 values before it will begin to create the stack
+
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Creates an EC2 instance and a security group
+Parameters:
+  KeyName:
+    Description: "Name of an existing EC2 KeyPair to enable SSH access to the instance"
+    Type: "AWS::EC2::KeyPair::KeyName"
+    ConstraintDescription: "Must be the name of an existing EC2 KeyPair"
+  VPCIP:
+    Description: "VPC ID"
+    Type: "AWS::EC2::VPC::Id"
+  SubnetID:
+    Description: "Subnet ID"
+    Type: "AWS::EC2::Subnet::Id"
+
+# Next, we will use a required 'Resource' section to create an AWS Security group. This security group will opemn up Port 22 for SSH access and HTTP port 80 for web traffic.
+# The optional 'Tag' section allows you to add one or more Tags to identify your security group.
+
+Resources:
+  InstanceSecurityGroup:
+    Type: "AWS::EC2::SecurityGroup"
+    Properties:
+      Tags:
+        - Key: "Name"
+          Value: "cloudformation-webserver"
+      VpcId: !Ref VPCIP
+      GroupDescription: "Webserver security group"
+      SecurityGroupIngress:
+        - CidrIp: "0.0.0.0/0"
+          Description: "Allowed from anywhere"
+          FromPort: "22"
+          ToPort: "22"
+          IpProtocol: "tcp"
+        - CidrIp: "0.0.0.0/0"
+          Description: "HTTP access from anywhere"
+          FromPort: "80"
+          ToPort: "80"
+          IpProtocol: "tcp"
+
+# Here we will use the 'Resource' section again to create our EC2 webserver instance. It will use an AMI called 'ami-02df9ea15c1778c9c' which is a freely available Ubuntu instance.
+# This EC2 instance will use the security group we created already earlier in our CloudFormation stack. 
+# The 'SecurityGroupIds' section is being told to get the Resource called 'InstanceSecurityGroup' and its value of 'GroupId'
+# Again we have included optional 'Tags' section to identify out EC2 instance
+# Finally, we use the 'UserData' section to embed a simple bash script to run on our EC2 instance when it is created for the first time.
+# In this example, the user data will perform an apt update to update the Ubuntu instance, it will install Apache Web server and place a HTML file with the content of 'Hello World!' in the /var/www/html folder for Apache to show 
+  EC2Instance:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      ImageId: "ami-02df9ea15c1778c9c"
+      InstanceType: "t2.micro"
+      SecurityGroupIds:
+        - !GetAtt InstanceSecurityGroup.GroupId
+      KeyName: !Ref KeyName
+      SubnetId: !Ref SubnetID
+      Tags:
+        - Key: "Name"
+          Value: "cloudformation-webserver"
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash -xe
+          sudo apt update
+          sudo apt install apache2 -y
+          echo "Hello World!" > /var/www/html/index.html
