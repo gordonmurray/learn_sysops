@@ -7,4 +7,5 @@ Chapter 1
 
 Chapter 2
 
-
+* Create a webserver using the AWS CLI
+* Create a webserver on AWS ECS using the AWS CLI
