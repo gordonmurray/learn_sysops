@@ -1,0 +1,32 @@
+- name: Create a security group
+  ec2_group:
+    name: "webserver-security-group"
+    description: "Security group for Webserver"
+    region: "{{ region }}"
+    aws_access_key: "{{ ec2_access_key }}"
+    aws_secret_key: "{{ ec2_secret_key }}"
+    rules:
+      - proto: tcp
+        ports:
+          - 22
+        cidr_ip: 0.0.0.0/0
+        rule_desc: allow all on ssh port
+      - proto: tcp
+        ports:
+          - 80
+        cidr_ip: 0.0.0.0/0
+        rule_desc: allow all on HTTP port
+    rules_egress:
+      - proto: "all"
+        cidr_ip: "0.0.0.0/0"
+  register: security_group
+
+- name: Tag the Security group
+  ec2_tag:
+    aws_access_key: "{{ ec2_access_key }}"
+    aws_secret_key: "{{ ec2_secret_key }}"
+    region: "{{ region }}"
+    resource: "{{ security_group.group_id }}"
+    state: present
+    tags:
+      Name: Webserver  

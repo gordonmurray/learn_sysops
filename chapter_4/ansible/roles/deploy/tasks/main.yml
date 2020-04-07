@@ -1,0 +1,4 @@
+- name: Copy our src directly to /var/www/html
+  copy:
+    src: ./src/
+    dest: /var/www/html/

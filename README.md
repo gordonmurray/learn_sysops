@@ -7,7 +7,7 @@ Chapter 1
 
 Chapter 2
 
-* Create a webserver using the AWS CLI
+* Create a webserver on AWS using the AWS CLI
 * Create a webserver on AWS ECS using the AWS CLI
 
 Chapter 3
@@ -16,5 +16,6 @@ Chapter 3
 
 Chapter 4
 
-* Create a webserver using Terraform
-* Create a webserver using CloudFormation
+* Create a webserver on AWS using Terraform
+* Create a webserver on AWS using CloudFormation
+* Create a webserver on AWS using Ansible
