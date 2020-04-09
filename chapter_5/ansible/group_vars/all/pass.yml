@@ -1,0 +1,2 @@
+ec2_access_key: [ your aws access key ]
+ec2_secret_key: [ your aws secret key ]

@@ -1,0 +1,7 @@
+- name: Upload public key to AWS
+  ec2_key:
+    name: "ansible-webserver"
+    key_material: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+    region: "{{ region }}"
+    aws_access_key: "{{ ec2_access_key }}"
+    aws_secret_key: "{{ ec2_secret_key }}"

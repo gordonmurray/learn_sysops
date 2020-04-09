@@ -1,0 +1,18 @@
+# Infrastructure playbook
+# Creates an EC2 instance and a Security Group
+# Items are Tagged to that another Playbook and configure them
+---
+- hosts: localhost
+
+  connection: local
+
+  gather_facts: false
+
+  vars:
+    region: eu-west-1
+    image: ami-04c58523038d79132 # Ubuntu 18.04 LTS
+
+  roles:
+    - keypair
+    - ec2
+    - securitygroup
