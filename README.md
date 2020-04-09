@@ -24,4 +24,4 @@ Chapter 5
 
 * Deploy a webserver using Travis and Ansible
 * Replacing a webserver using Packer, Ansible and Terraform
-*  
+* Creating and altering database tables with Skeema and pt-online-schema-changes
