@@ -1,0 +1,57 @@
+
+{
+    "builders": [{
+      "type": "amazon-ebs",
+      "profile": "{{user `profile`}}",
+      "region": "{{user `region`}}",
+      "source_ami": "{{user `base_ami_id`}}",
+      "instance_type": "{{user `instance_type`}}",
+      "force_deregister": "true",
+      "force_delete_snapshot": "true",      
+      "ssh_username": "ubuntu",
+      "ami_name": "example",
+      "ami_regions" : ["{{user `region`}}"],
+      "tags":
+        {
+          "Name": "webserver"
+        }
+    }],
+
+    "provisioners": [    
+    {
+      "type": "shell",
+      "inline": [
+          "sudo apt update",
+          "sudo apt install python3-pip -y",
+          "pip install 'ansible==2.9'"
+      ]
+    },
+    {
+      "type": "ansible-local",
+      "playbook_file": "../ansible/server.yml",
+      "role_paths": [
+        "../ansible/roles/apache",
+        "../ansible/roles/php",
+        "../ansible/roles/mysql",
+        "../ansible/roles/deploy"
+      ],
+      "group_vars": "../ansible/group_vars"
+    },
+    {
+      "type": "file",
+      "source": "../ansible/roles/apache/files/webserver.conf",
+      "destination": "/home/ubuntu/webserver.conf"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "sudo mv /home/ubuntu/webserver.conf /etc/apache2/sites-available/webserver.conf"
+      ]
+    },
+    {
+        "type": "file",
+        "source": "../src/index.php",
+        "destination": "/var/www/html/"
+    }
+    ]
+  }

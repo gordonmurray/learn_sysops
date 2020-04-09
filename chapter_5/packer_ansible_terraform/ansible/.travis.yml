@@ -1,0 +1,29 @@
+os: linux
+dist: bionic
+language: python
+python: 3.6
+
+before_install:
+  # Scripts to run before the install stage 
+  - sudo apt-get update -qq
+  - echo "${VAULT_PASSWORD}" > vault_password
+
+install:
+  # Scripts to run at the install stage  
+  - pip install awscli boto boto3 'ansible==2.9'
+
+deploy:
+  # deploy infrastructure changes
+  - provider: script
+    script: ansible-playbook -i aws_ec2.yml 01_infrastructure.yml --vault-password-file=vault_password
+    on:
+      branch:master
+  # deploy webserver configuration
+  - provider: script
+    script: ansible-playbook -i aws_ec2.yml 02_webserver.yml --vault-password-file=vault_password
+    on:
+      branch:master
+
+after_script:
+  # Scripts to run as the last stage 
+  - rm -f vault_password

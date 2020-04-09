@@ -1,0 +1,15 @@
+# Webserver playbook
+# Configures an EC2 instance to become a webserver
+# The EC2 instance was Tagged so that this Playbook can configure the server
+---
+- hosts: all
+
+  gather_facts: no
+
+  become: yes
+
+  user: ubuntu
+
+  roles:
+    - apache
+    - php

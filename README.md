@@ -19,3 +19,9 @@ Chapter 4
 * Create a webserver on AWS using Terraform
 * Create a webserver on AWS using CloudFormation
 * Create a webserver on AWS using Ansible
+
+Chapter 5
+
+* Deploy a webserver using Travis and Ansible
+* Replacing a webserver using Packer, Ansible and Terraform
+*  

@@ -1,0 +1,34 @@
+- name: Install Apache
+  vars:
+    packages:
+      - apache2
+  apt:
+    pkg: "{{ packages }}"
+    update_cache: yes
+    state: latest
+
+- name: Delete the default apache landing page
+  file:
+    path: /var/www/html/index.html
+    state: absent
+
+- name: Disable apache2 default vhost
+  file:
+    path: /etc/apache2/sites-enabled/000-default.conf
+    state: absent
+
+- name: Copy our virtual host
+  copy:
+    src: webserver.conf
+    dest: /etc/apache2/sites-available/webserver.conf
+  register: host_uploaded
+
+- name: Enable our virtual host
+  shell: /usr/sbin/a2ensite webserver.conf
+  when: host_uploaded.changed
+
+- name: Restart Apache
+  service:
+    name: apache2
+    state: restarted
+  when: host_uploaded.changed
