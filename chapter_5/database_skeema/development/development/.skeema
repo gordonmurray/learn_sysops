@@ -1,0 +1,4 @@
+default-character-set=utf8mb4
+default-collation=utf8mb4_general_ci
+schema=development
+alter-wrapper=/usr/bin/pt-online-schema-change --execute --alter {CLAUSES} D={SCHEMA},t={TABLE},h={HOST},P={PORT},u={USER},p={PASSWORDX}
