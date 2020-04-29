@@ -1,35 +1,28 @@
 sudo apt install qemu-kvm libvirt-bin virtinst -y
 sudo apt install virtinst -y
 
-#create a VM with 8gb disk usin the CLI
-
-# use virt=manger for a GUI
-
-
+# Create a VM with 8gb disk usin the CLI
 
 virt-install \
---name falcon-2 \
+--name ubuntu \
 --description "Our first VM" \
 --ram 1024 \
---disk path=/var/lib/libvirt/images/falcon2.img,size=10 \
+--disk path=/var/lib/libvirt/images/ubuntu.img,size=10 \
 --vcpus 2 \
 --virt-type kvm \
 --os-type linux \
 --os-variant ubuntu18.04 \
 --graphics none \
---network bridge:br0 \
 --location 'http://archive.ubuntu.com/ubuntu/dists/bionic/main/installer-amd64/' \
-#--extra-args "console=tty0 console=ttyS0,115200n8"
 --extra-args console=ttyS0
 
 Dont forget to install openSSH server, so we can SSH in later.
 
-# list
+# list VMs
 
 virsh list
 
-
-# get IP
+# Get IP
 $ virsh list
 $ virsh dumpxml VM_NAME | grep "mac address" 
 $ arp -an | grep 52:54:00:ce:8a:c4

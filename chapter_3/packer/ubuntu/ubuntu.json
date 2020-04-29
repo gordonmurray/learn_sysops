@@ -1,0 +1,84 @@
+{
+    "variables": {
+        "cpu": "2",
+        "ram": "2048",
+        "name": "ubuntu",
+        "disk_size": "40000",
+        "version": "1804",
+        "iso_checksum_type": "sha256",
+        "iso_urls": "http://archive.ubuntu.com/ubuntu/dists/bionic/main/installer-amd64/current/images/netboot/mini.iso",
+        "iso_checksum": "bed8a55ae2a657f8349fe3271097cff3a5b8c3d1048cf258568f1601976fa30d",
+        "headless": "false",
+        "config_file": "preseed.cfg",
+        "ssh_username": "root",
+        "ssh_password": "secretpassword"
+    },
+    "builders": [
+        {
+            "vm_name": "{{user `name`}}{{user `version`}}.qcow2",
+            "type": "qemu",
+            "format": "qcow2",
+            "accelerator": "kvm",
+            "qemu_binary": "/usr/bin/qemu-system-x86_64",
+            "net_device": "virtio-net",
+            "disk_interface": "virtio",
+            "disk_cache": "none",
+            "qemuargs": [
+                [
+                    "-m",
+                    "{{user `ram`}}M"
+                ],
+                [
+                    "-smp",
+                    "{{user `cpu`}}"
+                ]
+            ],
+            "ssh_wait_timeout": "45m",
+            "http_directory": "./",
+            "http_port_min": 10082,
+            "http_port_max": 10089,
+            "ssh_host_port_min": 2222,
+            "ssh_host_port_max": 2229,
+            "ssh_username": "{{user `ssh_username`}}",
+            "ssh_password": "{{user `ssh_password`}}",
+            "iso_urls": "{{user `iso_urls`}}",
+            "iso_checksum": "{{user `iso_checksum`}}",
+            "iso_checksum_type": "{{user `iso_checksum_type`}}",
+            "boot_wait": "10s",
+            "boot_command": [
+                "<tab><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "net.ifnames=0 biosdevname=0 fb=false hostname={{user `name`}}{{user `version`}} locale=en_US ",
+                "console-keymaps-at/keymap=us console-setup/ask_detect=false ",
+                "console-setup/layoutcode=us keyboard-configuration/layout=USA keyboard-configuration/variant=USA ",
+                "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/http/{{user `config_file`}} <enter><wait>"
+            ],
+            "boot_key_interval": "10ms",
+            "disk_size": "{{user `disk_size`}}",
+            "disk_discard": "unmap",
+            "disk_compression": true,
+            "headless": "{{user `headless`}}",
+            "shutdown_command": "echo '{{user `ssh_password`}}' | sudo -S shutdown -P now",
+            "output_directory": "output-ubuntu"
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "shell",
+            "execute_command": "{{ .Vars }} sudo -E bash '{{ .Path }}'",
+            "inline": [
+                "sudo apt-get update",
+                "sudo apt-get -y install software-properties-common",
+                "sudo apt-add-repository --yes --update ppa:ansible/ansible",
+                "sudo apt update"
+            ]
+        },
+        {
+            "type": "shell",
+            "execute_command": "{{ .Vars }} sudo -E bash '{{ .Path }}'",
+            "inline": [
+                "sudo apt-get clean",
+                "sudo apt-get -y autoremove --purge"
+            ]
+        }
+    ]
+}

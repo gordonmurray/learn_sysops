@@ -1,0 +1,11 @@
+virt-install --import \
+--name ubuntu-packer \
+--description "Our Ubuntu virtual machine" \
+--ram 2048 \
+--disk ubuntu-packer.qcow2,format=qcow2,bus=virtio \
+--vcpus 2 \
+--virt-type kvm \
+--os-type linux \
+--os-variant ubuntu18.04 \
+--graphics none \
+--check all=off

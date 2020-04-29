@@ -1,0 +1,11 @@
+virt-install --import \
+--name centos \
+--description "Our centos virtual machine" \
+--ram 1024 \
+--disk centos-packer.qcow2,format=qcow2,bus=virtio \
+--vcpus 2 \
+--virt-type kvm \
+--os-type linux \
+--os-variant=rhel7.5 \
+--graphics none \
+--check all=off \

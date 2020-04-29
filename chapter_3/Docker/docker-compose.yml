@@ -1,0 +1,14 @@
+version: '2.4'
+services:
+  web:
+    build: .
+    ports:
+      - "8080:80"
+  database:
+    image: "mariadb:latest"
+    environment:
+      MYSQL_ROOT_PASSWORD: secretpassword
+      MYSQL_DATABASE: database1
+      MYSQL_USER: user
+      MYSQL_PASSWORD: secretpassword
+    restart: on-failure
