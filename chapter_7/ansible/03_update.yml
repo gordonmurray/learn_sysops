@@ -1,0 +1,13 @@
+# Update playbook
+# Perform some Windows updates on a target server
+---
+- hosts: localhost
+
+  gather_facts: no
+
+  become: yes
+
+  user: ubuntu
+
+  roles:
+    - update

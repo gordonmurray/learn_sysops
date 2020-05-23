@@ -1,0 +1,10 @@
+# Windows Update playbook
+# Perm some APT updates on a target server
+# The EC2 instance was Tagged so that this Playbook can configure the server
+---
+- hosts: windows
+
+  gather_facts: no
+
+  roles:
+    - windows-update
