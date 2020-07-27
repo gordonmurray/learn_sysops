@@ -1,0 +1,6 @@
+{
+    "base_ami_id": "ami-04c58523038d79132",
+    "profile": "example",
+    "region": "eu-west-1",
+    "instance_type": "t2.nano"
+}

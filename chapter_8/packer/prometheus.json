@@ -1,0 +1,39 @@
+{
+    "builders": [
+        {
+            "type": "amazon-ebs",
+            "profile": "{{user `profile`}}",
+            "region": "{{user `region`}}",
+            "source_ami": "{{user `base_ami_id`}}",
+            "instance_type": "{{user `instance_type`}}",
+            "force_deregister": "true",
+            "force_delete_snapshot": "true",
+            "ssh_username": "ubuntu",
+            "ami_name": "prometheus",
+            "ami_regions": [
+                "{{user `region`}}"
+            ],
+            "tags": {
+                "Name": "prometheus"
+            }
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "file",
+            "source": "files/prometheus.service",
+            "destination": "/etc/systemd/system/prometheus.service"
+        },
+        {
+            "type": "shell",
+            "scripts": [
+                "files/install_prometheus.sh"
+            ]
+        },
+        {
+            "type": "file",
+            "source": "files/prometheus.yml",
+            "destination": "/etc/prometheus/prometheus.yml"
+        }
+    ]
+}
