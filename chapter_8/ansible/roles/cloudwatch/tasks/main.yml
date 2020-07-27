@@ -1,0 +1,8 @@
+- name: Download the Cloudwatch agent deb file
+  get_url:
+    url: https://s3.amazonaws.com/amazoncloudwatch-agent/debian/amd64/latest/amazon-cloudwatch-agent.deb
+    dest: /home/ubuntu/amazon-cloudwatch-agent.deb
+
+- name: Install Cloudwatch .deb package
+  apt:
+    deb: /home/ubuntu/amazon-cloudwatch-agent.deb
