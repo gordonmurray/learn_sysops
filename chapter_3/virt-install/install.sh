@@ -1,6 +1,9 @@
 sudo apt install qemu-kvm libvirt-bin virtinst -y
 sudo apt install virtinst -y
 
+# make images folder 
+sudo mkdir /var/lib/libvirt/images
+
 # Create a VM with 8gb disk usin the CLI
 
 virt-install \
