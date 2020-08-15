@@ -1,10 +1,8 @@
 # Install Graylog
 # Steps taken from official Graylog documentation at https://docs.graylog.org/en/3.2/pages/installation/os/ubuntu.html
-
-- name: Add source repository into sources list.
-  apt_repository:
-    repo: deb-src https://packages.graylog2.org/repo/packages/graylog-3.2-repository_latest.deb
-    state: present
+- name: Install Graylog .deb package
+  apt:
+    deb: https://packages.graylog2.org/repo/packages/graylog-3.2-repository_latest.deb
 
 - name: Install Graylog
   vars:
@@ -21,7 +19,7 @@
 - name: Set password secret
   lineinfile:
     path: /etc/graylog/server/server.conf
-    regexp: '^password_secret ='
+    regexp: "^password_secret ="
     line: password_secret = xexysJGLSnZ1VF41b4DPYDOxU9hiP4BAvJoCwLQKkiAwKgjSnD6375LNBTTDTDH128N0rYFhJgWJdjaKXCY09RmV1P58YftY
 
 # Create a password by using for example: echo -n yourpassword | shasum -a 256
@@ -29,15 +27,15 @@
 - name: Set password
   lineinfile:
     path: /etc/graylog/server/server.conf
-    regexp: '^root_password_sha2 ='
+    regexp: "^root_password_sha2 ="
     line: root_password_sha2 = 5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8
 
 - name: Enable service
   service:
-    name: graylog-server.service
+    name: graylog-server
     enabled: yes
 
 - name: Start service
   service:
-    name: graylog-server.service
+    name: graylog-server
     state: started

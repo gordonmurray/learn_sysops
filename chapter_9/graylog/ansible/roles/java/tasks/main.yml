@@ -1,11 +1,5 @@
 ---
-- name: Make sure universe repository is enabled
-  apt_repository:
-    repo: deb http://archive.ubuntu.com/ubuntu bionic universe
-    state: present
-    update_cache: true
-
-- name: Install dependencies icluding Java
+- name: Install dependencies including Java
   vars:
     packages:
       - apt-transport-https

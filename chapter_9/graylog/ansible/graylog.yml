@@ -6,12 +6,10 @@
 
   gather_facts: false
 
-  become: true
-
-  remote_user: ubuntu
+  become: yes  
 
   roles:
     - java
-    - mongodb
     - elasticsearch
+    - mongodb
     - graylog

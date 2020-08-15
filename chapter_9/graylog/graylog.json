@@ -1,6 +1,6 @@
 {
     "variables": {
-        "base_ami_id": "ami-07ee42ba0209b6d77",
+        "base_ami_id": "ami-04c58523038d79132",
         "region": "eu-west-1",
         "instance_type": "m5.large",
         "vpc_id": "vpc-e8bfa78d",
@@ -29,14 +29,21 @@
     ],
     "provisioners": [
         {
-            "type": "ansible",
-            "playbook_file": "ansible/graylog.yml",
-            "extra_arguments": [
-                "--connection",
-                "packer",
-                "-v",
-                "--extra-vars",
-                "ansible_shell_type=powershell ansible_shell_executable=None"
+            "type": "shell",
+            "inline": [
+                "sudo apt update",
+                "sudo apt upgrade -y",
+                "sudo apt install python ansible -y"
+            ]
+          },
+        {
+            "type": "ansible-local",
+            "playbook_file": "./ansible/graylog.yml",
+            "role_paths": [
+                "./ansible/roles/elasticsearch",
+                "./ansible/roles/graylog",
+                "./ansible/roles/java",
+                "./ansible/roles/mongodb"
             ]
         }
     ]

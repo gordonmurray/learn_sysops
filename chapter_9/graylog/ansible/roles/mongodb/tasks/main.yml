@@ -1,32 +1,22 @@
 # Install MongoDB for Grayloy
 # Steps taken from official Graylog documentation at https://docs.graylog.org/en/3.2/pages/installation/os/ubuntu.html
-
-- name: Add signing key
+- name: Add an apt key by id from a keyserver
   apt_key:
-    url: hkp://keyserver.ubuntu.com:80
-    state: present
+    keyserver: keyserver.ubuntu.com
+    id: 9DA31620334BD75D9DCB49F368818C72E52529D4
 
 - name: Add source repository into sources list.
   apt_repository:
-    repo: deb-src https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.0 multiverse
+    repo: deb https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.0 multiverse
     state: present
-    filename: mongodb-org-4.0.list
+    filename: mongodb-org-4.0
+    update_cache: yes    
 
-- name: install MongoDB
+- name: Install MongoDB
   vars:
     packages:
-      - mongodb-org
+      - mongodb
   apt:
     pkg: "{{ packages }}"
     update_cache: yes
     state: latest
-
-- name: Enable service
-  service:
-    name: mongod.service
-    enabled: yes
-
-- name: Start service
-  service:
-    name: mongod.service
-    state: started
