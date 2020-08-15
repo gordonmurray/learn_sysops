@@ -1,0 +1,43 @@
+{
+    "variables": {
+        "base_ami_id": "ami-07ee42ba0209b6d77",
+        "region": "eu-west-1",
+        "instance_type": "m5.large",
+        "vpc_id": "vpc-e8bfa78d",
+        "subnet_id": "subnet-a135ded7",
+        "access_key": "",
+        "secret_key": ""
+    },
+    "builders": [
+        {
+            "type": "amazon-ebs",
+            "region": "{{user `region`}}",
+            "source_ami": "{{user `base_ami_id`}}",
+            "instance_type": "{{user `instance_type`}}",
+            "access_key": "{{user `access_key`}}",
+            "secret_key": "{{user `secret_key`}}",
+            "force_deregister": "true",
+            "force_delete_snapshot": "true",
+            "ssh_username": "ubuntu",
+            "ami_name": "graylog",
+            "vpc_id": "{{user `vpc_id`}}",
+            "subnet_id": "{{user `subnet_id`}}",
+            "tags": {
+                "Name": "graylog"
+            }
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "ansible",
+            "playbook_file": "ansible/graylog.yml",
+            "extra_arguments": [
+                "--connection",
+                "packer",
+                "-v",
+                "--extra-vars",
+                "ansible_shell_type=powershell ansible_shell_executable=None"
+            ]
+        }
+    ]
+}

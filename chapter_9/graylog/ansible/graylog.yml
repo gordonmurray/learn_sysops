@@ -1,0 +1,17 @@
+# Install Graylog on an EC2 instance
+---
+- hosts: localhost
+
+  connection: local
+
+  gather_facts: false
+
+  become: true
+
+  remote_user: ubuntu
+
+  roles:
+    - java
+    - mongodb
+    - elasticsearch
+    - graylog
