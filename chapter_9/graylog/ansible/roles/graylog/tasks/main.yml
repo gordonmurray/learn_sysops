@@ -30,6 +30,12 @@
     regexp: "^root_password_sha2 ="
     line: root_password_sha2 = 5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8
 
+- name: Set Graylog bind address
+  lineinfile:
+    path: /etc/graylog/server/server.conf
+    regexp: "^http_bind_address ="
+    line: http_bind_address = 0.0.0.0:9000
+
 - name: Enable service
   service:
     name: graylog-server
