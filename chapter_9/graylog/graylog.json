@@ -5,8 +5,8 @@
         "instance_type": "m5.large",
         "vpc_id": "vpc-e8bfa78d",
         "subnet_id": "subnet-a135ded7",
-        "access_key": "",
-        "secret_key": ""
+        "access_key": "AKIAQHR3C3MPL7ICWWVK",
+        "secret_key": "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"
     },
     "builders": [
         {
