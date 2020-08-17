@@ -11,3 +11,10 @@ Follow the steps at https://learn.hashicorp.com/tutorials/packer/getting-started
 The following approach is useful to test the Ansible playbook in a local Docker container instead of potentially incurring a small cost on AWS due to repeated Packer builds.
 
 > docker build --pull --rm -f "chapter_9/graylog/Dockerfile" -t learnsysops:chapter9 "chapter_9/graylog"
+
+### Terraform build
+
+Build the Graylog instance using:
+
+> terraform apply
+
