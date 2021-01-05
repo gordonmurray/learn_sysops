@@ -1,5 +1,5 @@
 # Learn SysOps
-Example code samples from Learn SysOps
+Example code samples from a Learn Sysops series of blog posts on https://www.gordonmurray.com
 
 Chapter 1
 
